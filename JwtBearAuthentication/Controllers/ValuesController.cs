@@ -14,10 +14,9 @@ namespace JwtBearAuthentication.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet]
-        [Route("test")]
-        public IActionResult Get()
+        public IEnumerable<string> Get()
         {
-            return Ok(new string[] { "value1", "value2", "value3", "value4", "value5" });
+            return new string[] { "value1", "value2", "value3", "value4", "value5" };
         }
     }
 }
