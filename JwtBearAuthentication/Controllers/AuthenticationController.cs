@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JwtBearAuthentication.JwtToken;
+using JwtBearAuthentication.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,14 @@ namespace JwtBearAuthentication.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("gettoken")]
-        public IActionResult Token(string key)
+        public IActionResult Token([FromBody] UserModel user)
         {
             IActionResult response = Unauthorized();
-            var token = GenerateToken.GetToken(key);
-            response = Ok(token);
+            if(user.UserName == _config["AuthenUser:UserName"] && user.Password == _config["AuthenUser:Password"])
+            {
+                var token = GenerateToken.GetToken(_config["Jwt:Secret"], user);
+                response = Ok(token);
+            }
             return response;
         }
     }
